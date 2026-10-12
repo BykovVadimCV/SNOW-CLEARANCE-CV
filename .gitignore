@@ -8,6 +8,10 @@
 .env
 secrets/
 
+# prototype outputs when run from prototypes/
+prototypes/*.png
+prototypes/*.jpg
+
 __pycache__/
 *.egg-info/
 .pytest_cache/
