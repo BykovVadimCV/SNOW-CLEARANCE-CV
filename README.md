@@ -23,6 +23,7 @@ src/snowcv/core/        M0: config, label schema, licence policy, file layout, m
   resources/labels.yaml       frozen label schema (v1.0.0)
   resources/labels.lock.json  schema hash; any edit needs a version bump + `snowcv schema freeze`
 config/default.yaml     project config (data root, licence and split policy)
+prototypes/             M9 mask generator + M10 renderer prototypes (Stage 3 starting point)
 docs/stage0/            Stage 0 checklists: client agreement, legal questions, access requests
 tests/
 ```

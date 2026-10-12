@@ -20,6 +20,7 @@ Plan: [`docs/dataset_code_plan.md`](../dataset_code_plan.md), Part 2, Stage 0.
 | Agree camera access, metric, threshold, snow definition, DPA (152-FZ art. 6 p. 3) | team + client | Open | [`client_agreement.md`](client_agreement.md) |
 | Send lawyer the open questions | team | Open | [`legal_questions.md`](legal_questions.md) |
 | Reconcile licence rules with `VERIFIED-FINDINGS-2.md` | dev | Open: file is not in this repo yet | `src/snowcv/core/licences.py` |
+| Check in M9/M10 prototypes, align with schema | dev | Done; renderer inputs not checked in, provenance of `lot.png` and `hi_*` unknown | [`prototypes/README.md`](../../prototypes/README.md) |
 
 ## What M0 gives later modules
 

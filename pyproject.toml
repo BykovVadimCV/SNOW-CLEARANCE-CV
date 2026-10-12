@@ -15,6 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+proto = ["opencv-python-headless>=4.8", "scipy>=1.11", "matplotlib>=3.8"]
 
 [project.scripts]
 snowcv = "snowcv.cli:main"
