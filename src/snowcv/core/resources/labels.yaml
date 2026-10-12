@@ -1,0 +1,123 @@
+# Snow Clearance CV - label schema.
+#
+# FROZEN. Any edit changes the schema hash and breaks `snowcv schema check`.
+# To change it: edit, bump `version`, run `snowcv schema freeze`, and note the
+# change in docs/stage0/README.md. Existing masks must be migrated.
+#
+# Encoding: one single-channel uint8 PNG per layer, pixel value = class id,
+# `ignore_index` = unlabelled / do not train / do not score.
+#
+# Annotation conventions:
+#   - The surface layer describes what the ground/roof IS, regardless of snow.
+#     Under snow, label the surface that is known (from the clean reference
+#     frame or context) to be there.
+#   - Occluders (vehicles, people, poles, vegetation) are `other` in the
+#     surface layer. Do not guess the surface hidden behind them.
+#   - The snow layer marks ALL visible snow, on any surface including `other`.
+#     Coverage metrics intersect the snow layer with the inspected surface
+#     classes; this keeps the annotation rule simple and metric-agnostic.
+
+version: "1.0.0"
+ignore_index: 255
+
+layers:
+  surface:
+    description: What the ground or roof surface is, independent of snow.
+    classes:
+      - id: 0
+        name: other
+        color: [0, 0, 0]
+        description: >-
+          Anything not inspected: walls, vegetation, vehicles, people, sky,
+          street furniture, public roads outside the client's area.
+      - id: 1
+        name: parking_asphalt
+        color: [128, 128, 128]
+        description: Paved parking lots and asphalt areas used by vehicles.
+      - id: 2
+        name: sidewalk
+        color: [244, 35, 232]
+        description: Pedestrian sidewalks and footpaths, any paving.
+      - id: 3
+        name: yard_driveway
+        color: [152, 251, 152]
+        description: Courtyard driveways and yard access lanes.
+      - id: 4
+        name: roof_soft
+        color: [255, 140, 0]
+        description: >-
+          Soft roofing (bitumen / membrane). Mechanical clearing restricted;
+          damage risk.
+      - id: 5
+        name: roof_external_drain
+        color: [220, 20, 60]
+        description: >-
+          Pitched or sloped roof with external drainage (gutters, eaves).
+          Icicle and roof-avalanche risk over pedestrian areas.
+      - id: 6
+        name: roof_flat_internal
+        color: [0, 0, 142]
+        description: Flat roof with internal drains.
+      - id: 7
+        name: storage_zone
+        color: [0, 220, 220]
+        description: >-
+          Designated snow storage area. Snow here is permitted and is not a
+          clearance violation.
+
+  snow:
+    description: Snow state on top of any surface.
+    classes:
+      - id: 0
+        name: none
+        color: [0, 0, 0]
+        description: No snow visible (bare, wet-but-clear, or melt water only).
+      - id: 1
+        name: fresh
+        color: [255, 255, 255]
+        description: >-
+          Uncompacted snow. Bright, fine-grained, no or few tracks. Includes
+          a thin fresh dusting where the surface texture is hidden.
+      - id: 2
+        name: packed
+        color: [170, 200, 255]
+        description: >-
+          Snow compacted by vehicles or feet: ruts, tyre tracks, trodden
+          paths, dirty compacted snow.
+      - id: 3
+        name: slush_ice
+        color: [70, 130, 180]
+        description: >-
+          Wet snow-water mix, ice crust, glaze, frozen ruts. Usually darker
+          and glossier than packed snow.
+      - id: 4
+        name: pile
+        color: [255, 215, 0]
+        description: >-
+          Heaped snow visibly above the surface: windrows, plowed edge
+          berms, storage piles, roof-drop piles.
+
+# Texture-bank material tags (M8). Finer than the snow layer; each maps to the
+# snow class it is rendered as by default (M9/M10 may override per scene).
+texture_materials:
+  - name: fresh
+    snow_class: fresh
+    description: Clean uncompacted snow.
+  - name: packed
+    snow_class: packed
+    description: Uniformly compacted snow.
+  - name: ruts
+    snow_class: packed
+    description: Compacted snow with tyre ruts or foot tracks.
+  - name: slush
+    snow_class: slush_ice
+    description: Wet slush, melt rims, glaze.
+  - name: dirty
+    snow_class: packed
+    description: Compacted snow with road dirt, sand or reagent staining.
+  - name: plowed_edge
+    snow_class: pile
+    description: Edge of a plow pass / windrow side face.
+  - name: pile
+    snow_class: pile
+    description: Top surface of a snow pile.

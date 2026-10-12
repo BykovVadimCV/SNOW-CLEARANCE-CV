@@ -1,0 +1,24 @@
+# Snow Clearance CV - project config. Relative paths resolve against this file.
+# Override data_root with $SNOWCV_DATA_ROOT on other machines.
+
+data_root: ../data
+# manifest_path: ../data/manifest.sqlite   # default: <data_root>/manifest.sqlite
+
+# Day boundaries for split hold-out (client cameras are in Novosibirsk).
+timezone: Asia/Novosibirsk
+
+licence_policy:
+  # BY-SA (incl. all Mapillary imagery) is admitted but flagged until legal
+  # review of share-alike scope (docs/stage0/legal_questions.md, Q1).
+  # Set to false to drop it entirely.
+  allow_share_alike: true
+  allow_gfdl: false
+
+splits:
+  test_origins: [client]               # TEST: real client frames only
+  val_origins: [client, own_capture]   # VAL: real, separate cameras/days
+  holdout_by: [camera, day]
+  disjoint_pairs:
+    - [test, train]
+    - [test, val]
+    - [val, train]
